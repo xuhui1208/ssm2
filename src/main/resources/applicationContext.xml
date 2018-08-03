@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+        <!--包扫描-->
+        <context:component-scan base-package="com.java.serviceImpl"></context:component-scan>
+        <!--数据源-->
+        <bean class="com.alibaba.druid.pool.DruidDataSource" id="datasource">
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+                <property name="url" value="jdbc:mysql://127.0.0.1:3306/test"/>
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        </bean>
+        <!--映射文件的注册  dao的实现-->
+        <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+                <property name="dataSource" ref="datasource"/>
+                <!--mapper注册-->
+                <property name="mapperLocations" value="classpath:com/java/mappers/*.xml"/>
+               <!--实体类别名-->
+                <property name="typeAliasesPackage" value="com.java.entity"/>
+        </bean>
+        <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" id="mapperScannerConfigurer">
+                <property name="basePackage" value="com.java.dao"/>
+                <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+         </bean>
+        <!--事物-->
+        <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+                <property name="dataSource" ref="datasource"/>
+        </bean>
+</beans>
