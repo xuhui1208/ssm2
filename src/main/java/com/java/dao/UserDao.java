@@ -5,4 +5,6 @@ import com.java.entity.User;
 
 public interface UserDao {
     public User queryAll(String id);
+
+    public void modify(User user);
 }
